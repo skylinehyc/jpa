@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Data
@@ -29,15 +30,25 @@ public class Students {
     private Classes classes;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parents_id",unique = true)
+    @JoinColumn(name = "parents_id", referencedColumnName = "id" ,unique = true)
     private Parents parents;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            // 中间表名称
+            name = "students_teachers",
+            // 学生表的外键
+            joinColumns = {@JoinColumn(name = "student_id",referencedColumnName = "id")},
+            // 老师表的外键
+            inverseJoinColumns = {@JoinColumn(name = "teacher_id",referencedColumnName = "id")}
+    )
+    private Set<Teachers> teachers;
 
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, name);
+        return Objects.hash(id, name,parents,teachers);
     }
 
     @Override
@@ -45,6 +56,8 @@ public class Students {
         return "Students{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", parents='" + parents + '\'' +
+                ", teachers='" + teachers + '\'' +
                 '}';
     }
 }

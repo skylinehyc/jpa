@@ -27,4 +27,8 @@ public class Classes {
     // JoinColumn 和 mappedBy 互斥 ，使用JoinColumn 则双方都能维护
 //    @JoinColumn(name = "classe_id")
     private Set<Students> students;
+
+
+
+
 }
